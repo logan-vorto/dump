@@ -3,8 +3,8 @@
 1. [The Problem](#the-problem)
 1. [The Follow-Up](#the-follow-up)
 1. [The Data](#the-data)
-1. [Subregions](#subregions)
 1. [Building Hitches](#building-hitches)
+1. [Subregions](#subregions)
 1. [Booking Hitches](#booking-hitches)
 1. [Technical Details](#technical-details)
 
@@ -36,10 +36,6 @@ We define "dispatchability" as a load that is all of the following:
 
 From this, we can build a curve of the average load distribution for the given day of the week.
 
-## Subregions
-
-If configured, facilities can be used as subregion hubs to build driver demand around. An example of this is in Atlanta (52), where we have 3 major service centers acting as our subregions in 3 distinct parts of the overal region. Using subregions will cause the historical load data to be crunched based on proximity to each configured subregion before being built into hitches. Using subregions can _dramatically change what drivers see when booking hitches_. See [Driver Hitch Booking](#driver-booking) for details.
-
 ## Building Hitches
 
 A cron runs once per week to generate the data for the upcoming week. As of writing this, the cron is intended to run on Friday and generating data for the following Monday through the Sunday after that.
@@ -50,6 +46,10 @@ From all the estimated shift times, the system will perform a greedy algorithm t
 * Hitches can have varied start times, but will be restricted to a 2-hour window across the hitch (e.g. all shift start times will fall between 8am and 10am)
 
 These rules are intended to maximize the number of 5 day hitches available to the drivers. There will be hitches of various lengths from 1-5 shifts that can be as long as 6 days in the case of a 5-shift hitch with a day off in the middle.
+
+## Subregions
+
+If configured, facilities can be used as subregion hubs to build driver demand around. An example of this is in Atlanta (52), where we have 3 major service centers acting as our subregions in 3 distinct parts of the overal region. Using subregions will cause the historical load data to be crunched based on proximity to each configured subregion before being built into hitches. Using subregions can _dramatically change what drivers see when booking hitches_. See [Driver Hitch Booking](#driver-booking) for details.
 
 ## Booking Hitches
 
