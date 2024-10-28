@@ -1,7 +1,6 @@
 # TONU
 
 TONU or "Truck Ordered, Not Used" are paid out when a load is unable to be completed after a driver/truck has done some amount of work towards completing that load.
-This usually occurs in the form of one of the following:
 
 ## Causes
 
@@ -43,6 +42,16 @@ of $100 and a fuel surcharge of $100, the charges on the load will show:
 1. TONU: $50
 1. FSC: $100
 
+## Technical Details
+
+### Database
+
+TONU charges will show up in the `lohiloop_load_broker_charge` table as any other load charges would.
+
 ### Feature Flag
 
 This is currently controlled within Launch Darkly via the `tonu_deadhead_pricing_enabled_bool` flag.
+
+### Gaps
+
+We are not populating the `calcData` field on the TONU charges themselves. Ideally, we would have this populated to aid in troubleshooting and understanding of the charge calculation.
