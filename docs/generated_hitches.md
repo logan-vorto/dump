@@ -98,3 +98,10 @@ The generated hitch data is stored in the following tables
 * `vpf.shift_demand_generated_shift` - The generated shifts, each referencing which hitch they are a part of
 * `vpf.shift_demand_subregion` - Subregions for a pool to build hitches around
 * `vpf.shift_demand_generation_raw_output` - Intended to house raw data for troubleshooting/investigation. Currently unused
+
+### Endpoints
+
+There are only two endpoints available:
+
+* `/v2/vpf/driver/hitch/booking_v3/available_hitches` - Allows drivers to view hitches that are available to them, or admin/internal users to see what hitches are available for a given driver
+* `/v2/vpf/driver/hitch/booking_v3/book` - Allows drivers to book their own hitches, or admin/internal to book hitches on behalf of drivers
