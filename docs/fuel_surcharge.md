@@ -4,7 +4,7 @@ Fuel Surcharge (often abbreviated as FSC) is charge paid out to offset fuel cost
 
 ## Payment
 
-For completed loads FSC is calculated against the Deadhead and Linehaul miles accrued during the load
+For completed loads, FSC is calculated against the Deadhead and Linehaul miles accrued during the load.
 
 Restrictions:
 

@@ -25,8 +25,7 @@ that plans out drivers in a way that better matches the expected distribution of
 
 ## The Data
 
-Look back at the previous three instances of that day (Monday, Tuesday, etc) and build up a dipsatchability graph of
-the loads over each day.
+To determine where/when we want shifts, the system compiles the previous three instances of that day (Monday, Tuesday, etc) to build up the average dipsatchability data of the loads over each day.
 
 We define "dispatchability" as a load that is all of the following:
 
@@ -38,18 +37,18 @@ From this, we can build a curve of the average load distribution for the given d
 
 ## Building Hitches
 
-A cron runs once per week to generate the data for the upcoming week. As of writing this, the cron is intended to run on Friday and generating data for the following Monday through the Sunday after that.
+A cron runs once per week to generate the data for the upcoming week. As of writing this, the cron is intended to run on Friday and generate one week worth of data data starting from the following Monday.
 
 From all the estimated shift times, the system will perform a greedy algorithm to build the longest hitches with the following restrictions:
 
-* Hitches can have one day without a shift (e.g. a 4-shift hitch on Monday, Tuesday, Thursday, ad Friday)
+* Hitches can have one day without a shift (e.g. a hitch that spans 5 days, but only has shifts on Monday, Tuesday, Thursday, and Friday)
 * Hitches can have varied start times, but will be restricted to a 2-hour window across the hitch (e.g. all shift start times will fall between 8am and 10am)
 
 These rules are intended to maximize the number of 5 day hitches available to the drivers. There will be hitches of various lengths from 1-5 shifts that can be as long as 6 days in the case of a 5-shift hitch with a day off in the middle.
 
 ## Subregions
 
-If configured, facilities can be used as subregion hubs to build driver demand around. An example of this is in Atlanta (52), where we have 3 major service centers acting as our subregions in 3 distinct parts of the overal region. Using subregions will cause the historical load data to be crunched based on proximity to each configured subregion before being built into hitches. Using subregions can _dramatically change what drivers see when booking hitches_. See [Driver Hitch Booking](#driver-booking) for details.
+If configured, facilities can be used as subregion hubs to build driver demand around. An example of this is in Atlanta (pool 52), where we have 3 major service centers acting as our subregions in 3 distinct parts of the overall region. Configuring subregions will cause the historical load data to be crunched based on proximity to each subregion before being built into hitches. Using subregions can _dramatically change what drivers see when booking hitches_. See [Driver Hitch Booking](#driver-booking) for details.
 
 ## Booking Hitches
 
@@ -69,7 +68,8 @@ The app workflow has been updated to reflect the new hitch process, and drivers 
 * Drivers can only see/book hitches starting the next day
 * Drivers can only see hitches for their closest subregion, if their region has subregions configured
 * Desired hitch does not overlap with their existing hitches
-* Desired hitches shifts do not fall within a 10 hour buffer around the shifts of their existing hitches, assuming 14 hour shifts
+    * Hitches cannot be nested inside of eachother, i.e. a Driver cannot book a 1-day hitch to fill an off-day in an existing hitch
+    * Desired hitches shifts do not fall within a 10 hour buffer around the shifts of their existing hitches, assuming 14 hour shifts
 
 ### Carrier Booking
 
@@ -105,3 +105,8 @@ There are only two endpoints available:
 
 * `/v2/vpf/driver/hitch/booking_v3/available_hitches` - Allows drivers to view hitches that are available to them, or admin/internal users to see what hitches are available for a given driver
 * `/v2/vpf/driver/hitch/booking_v3/book` - Allows drivers to book their own hitches, or admin/internal to book hitches on behalf of drivers
+
+
+### Odds and Ends
+
+We allow swapping hitches to other drivers. This is at least one place in the code that maniupulates hitches in a less-than-ideal manner for keeping our Generated Hitches aligned with the rest of the system. There is a function to handle this specific scenario, but there may be others we haven't uncovered yet. Be careful when trying to move hitches around and deleting/recreating hitches.

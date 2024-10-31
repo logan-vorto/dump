@@ -25,4 +25,4 @@ As of writing, there are only two events that can occur:
 * Trailer Updates (called `yard_check` in the DB, somewhat of a misnomer) that award 4 points
 * Award Bonus Coin, which deducts 100 Bonus Points from the driver and gives them 1 Bonus Coin
 
-Which events are visible to drivers is configurable. Currently drivers cannot see the "Award Bonus Coin" event, as seeing an event worth -100 points would likely just be confusing.
+Which events are visible to drivers is configurable in the DB. Currently drivers cannot see the "Award Bonus Coin" event, as seeing an event worth -100 points would likely just be confusing.
